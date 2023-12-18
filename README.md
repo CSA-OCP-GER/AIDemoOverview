@@ -2,7 +2,6 @@
 
 | Name      | Description   | Link   |
 | ----------- | ----------- | ----------- |
-
 |Knowledge Mining with Azure OpenAI| The purpose of this repo is to accelerate the deployment of a Python-based Knowledge Mining solution with OpenAI that will ingest a Knowledge Base, generate embeddings using the contents extracted, store them in a vector search engine (Redis), and use that engine to answer queries / questions specific to that Knowledge Base. The repo includes the use of MRKL/ReAct Prompts and the ability to ask questions of different stores (including mathematical operations). | [Link](https://github.com/MSUSAzureAccelerators/Knowledge-Mining-with-OpenAI)
 | OpenAI workshop | Workshop materials to build intelligent solutions on Open AI | [Link](https://github.com/microsoft/OpenAIWorkshop)
 |Semantic Kernel |Semantic Kernel (SK) is a lightweight SDK enabling integration of AI Large Language Models (LLMs) with conventional programming languages.| [Link](https://github.com/microsoft/semantic-kernel)

@@ -3,6 +3,8 @@ import "~/styles/globals.css";
 import { Inter } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
+import { Navbar } from "./_components/navbar/navbar";
+import { getServerAuthSession } from "~/server/auth";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -15,17 +17,21 @@ export const metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+
+  const session = await getServerAuthSession();
+
   return (
     <html lang="en" className="h-full">
       <body className={`font-sans ${inter.variable} h-full`}>
         <>
           <TRPCReactProvider>
             <div className="min-h-full">
+              <Navbar authenticated={!!session?.user} />
               <div className="py-10">
                 <main>
                   <div className="mx-auto max-w-7xl sm:px-6 lg:px-12">

@@ -18,8 +18,6 @@ type props = {
 
 export function Navbar( { authenticated }: props) {
   
-  console.log("authenticated: " + authenticated);
-
     const links = [
         { href: '/', label: 'Home', authenticated: false },
         { href: '/search', label: 'AI-Demos', authenticated: false },
@@ -56,12 +54,9 @@ export function Navbar( { authenticated }: props) {
                   {/* 
                   if authenticated = true, then show admin link
                   show all other links regardless
-                
                   */}
                   {links.map((item) => (
                       authenticated || !item.authenticated ? (
-                     
-                    
                     <a
                       key={item.label}
                       href={item.href}

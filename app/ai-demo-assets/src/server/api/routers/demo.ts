@@ -67,13 +67,15 @@ const aidemos: demo[] = [
   },
 ];
 
-
 export const demosRouter = createTRPCRouter({
-  demos: publicProcedure
-    .query(() => {
-      return {
-        aidemos: aidemos,
-      };
-    }),
 
+  demos: publicProcedure
+    .input(z.object({ text: z.string() }))
+    .query(async ({ input }) => { // Add 'async' keyword here
+      if (!input.text) {
+        return aidemos;
+      }
+      return aidemos.filter((demo) => demo.name.toLowerCase().includes(input.text.toLowerCase()));
+    }
+    ),
 });

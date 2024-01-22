@@ -1,9 +1,7 @@
 import Image from "next/image";
 
 import { api } from "~/trpc/server";
-import { demo } from "../api/routers/demo";
-
-
+import { Suspense } from "react";
 
 // for each industry define a color
 const industries = [
@@ -30,19 +28,32 @@ const demoTypes = [
   { name: "Other", color: "bg-gray-100 text-gray-800" },
 ];
 
-export default async function DemoTable() {
-
-    const aidemos = await api.demos.demos.query();
+const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 
-  const getIndustryColor = (industry : string ) => {
+export default async function DemoTable({
+  searchParams,
+}: {
+  searchParams?: {
+    query?: string;
+    page?: string;
+  };
+}) {
+  const query = searchParams?.query ?? "";
+
+
+  const aidemos = await api.demos.demos.query({ text: query });
+
+
+  const getIndustryColor = (industry: string) => {
     return (
-      industries.find((i) => i.name === industry)?.color ?? "bg-gray-100 text-gray-800"
+      industries.find((i) => i.name === industry)?.color ??
+      "bg-gray-100 text-gray-800"
     );
   };
 
   // Function to get the color class for a given demo type
-  const getDemoTypeColor = (demoType : string) => {
+  const getDemoTypeColor = (demoType: string) => {
     return (
       demoTypes.find((dt) => dt.name === demoType)?.color ??
       "bg-gray-100 text-gray-800"
@@ -50,126 +61,136 @@ export default async function DemoTable() {
   };
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8">
-
-
-      {/* Table view for non-mobile screens */}
-      <div className="hidden sm:block">
-        <div className="mt-8 flow-root">
-          <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-              <table className="min-w-full divide-y divide-gray-300">
-              <thead>
-                <tr>
-                  <th
-                    scope="col"
-                    className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
-                  >
-                    Topic
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                  >
-                    Description
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                  >
-                    Industries
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200 bg-white">
-                {aidemos.aidemos.map((demo) => (
-                  <tr key={demo.name}>
-                    <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
-                      <div className="flex items-center">
-                        <div className="h-11 w-11 flex-shrink-0">
-                          <Image
-                            className="h-11 w-11 rounded-full"
-                            src={demo.image}
-                            alt=""
-                            width={32}
-                            height={32}
-                          />
-                        </div>
-                        <div className="ml-4">
-                          <div className="font-medium text-gray-900">
-                            {demo.name}
+    <Suspense key={query} fallback={<div>Loading...</div>}>
+      <div className="px-4 sm:px-6 lg:px-8">
+        {/* Table view for non-mobile screens */}
+        <div className="hidden sm:block">
+          <div className="mt-8 flow-root">
+            <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+              <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                <table className="min-w-full divide-y divide-gray-300">
+                  <thead>
+                    <tr>
+                      <th
+                        scope="col"
+                        className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
+                      >
+                        Topic
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                      >
+                        Description
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                      >
+                        Industries
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200 bg-white">
+                    {aidemos.map((demo) => (
+                      <tr key={demo.name}>
+                        <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
+                          <div className="flex items-center">
+                            <div className="h-11 w-11 flex-shrink-0">
+                              <Image
+                                className="h-11 w-11 rounded-full"
+                                src={demo.image}
+                                alt=""
+                                width={32}
+                                height={32}
+                              />
+                            </div>
+                            <div className="ml-4">
+                              <div className="font-medium text-gray-900">
+                                {demo.name}
+                              </div>
+                              <div className="mt-1 text-gray-500">
+                                {demo.area}
+                              </div>
+                            </div>
                           </div>
-                          <div className="mt-1 text-gray-500">{demo.area}</div>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="text-wrap px-3 py-5 text-sm text-gray-500">
-                      <div className="text-gray-900">{demo.description}</div>
-                    </td>
-                    <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+                        </td>
+                        <td className="text-wrap px-3 py-5 text-sm text-gray-500">
+                          <div className="text-gray-900">
+                            {demo.description}
+                          </div>
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+                          {demo.industries?.map((industry, index) => (
+                            <span
+                              key={index}
+                              className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                                industries.find((i) => i.name === industry)
+                                  ?.color
+                              }`}
+                            >
+                              {industry}
+                            </span>
+                          ))}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* List view for mobile screens */}
+        <div className="sm:hidden">
+          <div className="mt-8 flow-root">
+            <ul className="divide-y divide-gray-200">
+              {aidemos.map((demo) => (
+                <li key={demo.name} className="py-4">
+                  <div className="flex items-center space-x-4">
+                    <div className="flex-shrink-0">
+                      <Image
+                        className="h-8 w-8 rounded-full"
+                        src={demo.image}
+                        alt=""
+                        width={32}
+                        height={32}
+                      />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm font-medium text-gray-900">
+                        {demo.name}
+                      </p>
+                      <p className="truncate text-sm text-gray-500">
+                        {demo.area}
+                      </p>
+                      <p className="mt-1 text-sm text-gray-500">
+                        {demo.description}
+                      </p>
                       {demo.industries?.map((industry, index) => (
                         <span
                           key={index}
-                          className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                            industries.find((i) => i.name === industry)?.color
-                          }`}
+                          className={`mr-2 mt-1 inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getIndustryColor(industry)}`}
                         >
                           {industry}
                         </span>
                       ))}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-              </table>
-            </div>
+                      {demo.demoType && (
+                        <span
+                          className={`mt-1 inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getDemoTypeColor(demo.demoType)}`}
+                        >
+                          {demo.demoType}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>
-
-      {/* List view for mobile screens */}
-      <div className="sm:hidden">
-        <div className="mt-8 flow-root">
-          <ul className="divide-y divide-gray-200">
-            {aidemos.aidemos.map((demo) => (
-              <li key={demo.name} className="py-4">
-                <div className="flex items-center space-x-4">
-                  <div className="flex-shrink-0">
-                    <Image
-                      className="h-8 w-8 rounded-full"
-                      src={demo.image}
-                      alt=""
-                      width={32}
-                      height={32}
-                    />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-900 truncate">{demo.name}</p>
-                    <p className="text-sm text-gray-500 truncate">{demo.area}</p>
-                    <p className="mt-1 text-sm text-gray-500">{demo.description}</p>
-                    {demo.industries?.map((industry, index) => (
-                      <span
-                        key={index}
-                        className={`inline-flex items-center mt-1 mr-2 px-2.5 py-0.5 rounded-full text-xs font-medium ${getIndustryColor(industry)}`}
-                      >
-                        {industry}
-                      </span>
-                    ))}
-                    {demo.demoType && (
-                      <span
-                        className={`inline-flex items-center mt-1 px-2.5 py-0.5 rounded-full text-xs font-medium ${getDemoTypeColor(demo.demoType)}`}
-                      >
-                        {demo.demoType}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </div>
+    </Suspense>
   );
 }
-  

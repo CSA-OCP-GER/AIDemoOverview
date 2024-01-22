@@ -5,3 +5,7 @@
 * Clustering Demos by Industry, Persona, KPIs, Horizontal.
 * Sharepoint might support creating a page with clickable areas.
 * Github might support creating a page with clickable areas.
+
+
+Must be easily maintainable.
+Working Student could update the list.

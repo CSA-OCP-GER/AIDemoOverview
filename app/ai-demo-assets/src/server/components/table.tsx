@@ -1,13 +1,9 @@
 import Image from "next/image";
 
-interface demo {
-  name: string;
-  description: string;
-  area: string;
-  image: string;
-  industries?: string[];
-  demoType?: string;
-}
+import { api } from "~/trpc/server";
+import { demo } from "../api/routers/demo";
+
+
 
 // for each industry define a color
 const industries = [
@@ -34,60 +30,10 @@ const demoTypes = [
   { name: "Other", color: "bg-gray-100 text-gray-800" },
 ];
 
-const aidemos: demo[] = [
-  {
-    name: "Azure Cognitiv Services",
-    description: "Lorem ipsum et delor, et suminur de color estrandum sunt.",
-    area: "Microsoft Azure",
-    image: "/icons/10162-icon-service-Cognitive-Services.svg",
-    industries: ["Retail", "Education", "Healthcare"], // Example industries
-    demoType: "Klick-Demo",
-  },
-  {
-    name: "Azure Machine Learning",
-    description: "Lorem ipsum et delor, et suminur de color estrandum sunt.",
-    area: "Microsoft Azure",
-    image: "/icons/10166-icon-service-Machine-Learning.svg",
-    industries: ["Retail"], // Example industries
-    demoType: "Video-Demo",
-  },
-  {
-    name: "Azure Bot Service",
-    description: "Lorem ipsum et delor, et suminur de color estrandum sunt.",
-    area: "Microsoft Azure",
-    image: "/icons/10162-icon-service-Cognitive-Services.svg",
-    industries: ["Finance", "Retail"], // Example industries
-    demoType: "Code-Demo",
-  },
-  {
-    name: "Azure Cognitive Search",
-    description: "Lorem ipsum et delor, et suminur de color estrandum sunt.",
-    area: "Microsoft Azure",
-    image: "/icons/10162-icon-service-Cognitive-Services.svg",
-    demoType: "Presentation",
-  },
-  {
-    name: "Azure Custom Vision",
-    description: "Lorem ipsum et delor, et suminur de color estrandum sunt.",
-    area: "Microsoft Azure",
-    image: "/icons/10162-icon-service-Cognitive-Services.svg",
-  },
-  {
-    name: "Azure Form Recognizer",
-    description: "Lorem ipsum et delor, et suminur de color estrandum sunt.",
-    area: "Microsoft Azure",
-    image: "/icons/10162-icon-service-Cognitive-Services.svg",
-    demoType: "Klick-Demo",
-  },
-  {
-    name: "Azure Personalizer",
-    description: "Lorem ipsum et delor, et suminur de color estrandum sunt.",
-    area: "Microsoft Azure",
-    image: "/icons/10162-icon-service-Cognitive-Services.svg",
-  },
-];
+export default async function DemoTable() {
 
-export default function DemoTable() {
+    const aidemos = await api.demos.demos.query();
+
 
   const getIndustryColor = (industry : string ) => {
     return (
@@ -105,24 +51,7 @@ export default function DemoTable() {
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
-      <div className="sm:flex sm:items-center">
-        <div className="sm:flex-auto">
-          <h1 className="text-base font-semibold leading-6 text-gray-900">
-            AI-Demos
-          </h1>
-          <p className="mt-2 text-sm text-gray-700">
-            A list of all the AI-Demos
-          </p>
-        </div>
-        <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-          <button
-            type="button"
-            className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          >
-            Add AI-Demo
-          </button>
-        </div>
-      </div>
+
 
       {/* Table view for non-mobile screens */}
       <div className="hidden sm:block">
@@ -153,7 +82,7 @@ export default function DemoTable() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {aidemos.map((demo) => (
+                {aidemos.aidemos.map((demo) => (
                   <tr key={demo.name}>
                     <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
                       <div className="flex items-center">
@@ -202,7 +131,7 @@ export default function DemoTable() {
       <div className="sm:hidden">
         <div className="mt-8 flow-root">
           <ul className="divide-y divide-gray-200">
-            {aidemos.map((demo) => (
+            {aidemos.aidemos.map((demo) => (
               <li key={demo.name} className="py-4">
                 <div className="flex items-center space-x-4">
                   <div className="flex-shrink-0">

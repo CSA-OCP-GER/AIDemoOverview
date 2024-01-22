@@ -1,7 +1,9 @@
 import DemoTable from "~/server/components/table";
 
-
 export default async function Page() {
+
+
+
   return (
     <div>
       <main>

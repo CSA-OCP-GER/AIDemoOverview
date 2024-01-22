@@ -1,3 +1,4 @@
+import DemoTable from "~/server/components/table";
 
 
 export default async function Page() {
@@ -40,6 +41,7 @@ export default async function Page() {
               </div>
 
               {/* Search results */}
+              <DemoTable  />
 
 
 

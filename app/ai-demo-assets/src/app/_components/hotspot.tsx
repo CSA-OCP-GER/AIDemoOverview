@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 interface HotspotProps {
   id: number;
   title: string;
@@ -19,53 +21,63 @@ const Hotspot: React.FC<HotspotProps> = ({
   onBlur,
   isFocused,
 }) => {
-  const lineLength = 70;
-  const lineEndX = x + lineLength;
-  const lineEndY = y;
+    const lineLength = 70; // Adjusted for the viewBox size
+    const centerX = 100; // Center x-coordinate in the viewBox
+    const centerY = 90; // Center y-coordinate in the viewBox
+    const lineStartX = centerX;
+    const lineStartY = centerY;
+    const lineEndX = centerX;
+    const lineEndY = centerY - lineLength; // Line goes up from the center
+  
+    const [hovered, setHovered] = useState(false);
+
+    const handleMouseEnter = () => {
+      setHovered(true);
+    };
+  
+    const handleMouseLeave = () => {
+      setHovered(false);
+    };
 
   return (
     <svg
+      onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}
       key={id}
-      width="50"
-      height="50"
-      viewBox="0 0 100 100"
-      className={`absolute cursor-pointer ${isFocused ? "ring-opacity-100" : "ring-opacity-0"} transition-all`}
+      width="200"
+      height="140"
+      viewBox="0 0 200 140"
+      className={`absolute cursor-pointer ${isFocused ? "ring-opacity-10" : "ring-opacity-0"} transition-all`}
       style={{ left: x, top: y, transform: "translate(-50%, -50%)" }}
       onClick={onClick}
       onFocus={onFocus}
       onBlur={onBlur}
       tabIndex={0}
     >
-      <defs>
-        <linearGradient id={`gradient-${id}`} x1="0%" y1="100%" x2="0%" y2="0%">
-          <stop offset="0%" style={{ stopColor: "white", stopOpacity: 0 }} />
-          <stop offset="100%" style={{ stopColor: "white", stopOpacity: 1 }} />
-        </linearGradient>
-      </defs>
-
       <line
-        x1="100"
-        y1="100"
-        x2="100"
+        x1={lineStartX}
+        y1={lineStartY}
+        x2={lineEndX}
         y2={lineEndY}
-        stroke={`url(#gradient-${id})`}
-        strokeWidth="2"
+        stroke="white"
+        opacity={isFocused ? 0.2 : 0.2}
+        strokeWidth="1"
       />
       <text
-        x="100"
-        y={lineEndY - 10}
+        x={lineEndX}
+        y={lineEndY - 10} // Adjust the y position to place the text above the line
         fill="white"
         fontSize="12"
         textAnchor="middle"
         dominantBaseline="central"
-      >
+        className={`text-industry ${hovered ? 'text-hovered' : ''}`}>
         {title}
       </text>
 
+
       <title>{title}</title>
       <circle
-        cx="50"
-        cy="50"
+        cx={centerX}
+        cy={centerY}
         r="50"
         fill="white"
         fillOpacity="0.1"
@@ -73,16 +85,16 @@ const Hotspot: React.FC<HotspotProps> = ({
       />
 
       <circle
-        cx="50"
-        cy="50"
+        cx={centerX}
+        cy={centerY}
         r="10"
         fill="white"
         fillOpacity="0.4"
         className="inner-circle"
       />
       <circle
-        cx="50"
-        cy="50"
+        cx={centerX}
+        cy={centerY}
         r="30"
         fill="white"
         fillOpacity="0.3"

@@ -35,17 +35,12 @@ const generateNumberArray = (start: number, end: number): number[] => {
   };
   // Titles of your industries
 const industryTitles = [
-    "Technology",
     "Healthcare",
     "Retail",
     "Manufacturing",
     "Finance",
     "Transportation",
     "Education",
-    "Government",
-    "Energy",
-    "Agriculture",
-    "Other",
     // ... add more titles if needed
   ];
   
@@ -124,17 +119,9 @@ const InteractiveIndustryMap: React.FC = () => {
   };
 
 
+  // eslint-disable-next-line @typescript-eslint/unbound-method
   const { replace } = useRouter();
 
-  function handleSearch(term: string) {
-    const params = new URLSearchParams(searchParams);
-    if (term) {
-      params.set("query", term);
-    } else {
-      params.delete("query");
-    }
-    replace(`search?${params.toString()}`);
-  }
 
   // Function to calculate the position based on image dimensions
   const calculatePosition = (percentageX: number, percentageY: number) => {

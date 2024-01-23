@@ -14,6 +14,18 @@
     animation: growAndFade 1.2s infinite;
   }
   
+  .text-industry {
+    font-size: 0.7rem;
+    font-weight: 600;
+    opacity: 0.6;
+  }
+
+  .text-hovered {
+    font-size: 0.9rem;
+    opacity: 1.0;
+    transition: all 0.6s ease;
+  }
+
   
   @keyframes growAndFade {
     0%{

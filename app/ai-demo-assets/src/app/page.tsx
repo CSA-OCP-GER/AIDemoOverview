@@ -13,12 +13,12 @@ export default async function Home() {
 
   return (
     <main className="flex flex-col items-center justify-center">
-      <div className="container flex flex-col items-center justify-center gap-6 px-4 py-6 ">
+      <div className="container flex flex-col items-center justify-center gap-6  ">
         {/* <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
           AI-<span className="text-[hsl(280,100%,70%)]">Demo</span> Assets
         </h1> */}
         {/* now the main content, an image map */}
-        <div className="w-full max-w-4xl h-full">
+        <div className="w-full h-full">
           <InteractiveIndustryMap />
         </div>
         

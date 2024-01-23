@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/1bb50040-2ab3-42d6-baac-8855eb7321c7/resourceGroups/rgAIDemoAssets/providers/Microsoft.Web/sites/ai-demo-assets-dev",
+    "appService.deploySubpath": "."
+}

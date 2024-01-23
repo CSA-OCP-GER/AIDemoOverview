@@ -1,3 +1,32 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* TailwindCSS styles */
+
+.outer-circle {
+    transition: all 0.9s ease;
+  }
+  
+  .outer-circle.focused,
+  .outer-circle:hover,
+  .outer-circle:focus {
+    animation: growAndFade 1.2s infinite;
+  }
+  
+  
+  @keyframes growAndFade {
+    0%{
+      r: 40;
+      opacity: 0.5;
+    }
+    50% {
+      r: 50; /* Adjust the radius as needed */
+      opacity: 0;
+    }
+    100% {
+      r: 60; /* Adjust the radius as needed */
+      opacity: 0;
+    }
+
+  }

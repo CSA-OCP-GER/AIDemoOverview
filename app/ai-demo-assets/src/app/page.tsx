@@ -4,6 +4,7 @@ import Link from "next/link";
 import { CreatePost } from "~/app/_components/create-post";
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
+import InteractiveIndustryMap from "./_components/InteractiveIndustryMap";
 
 export default async function Home() {
   noStore();
@@ -13,9 +14,13 @@ export default async function Home() {
   return (
     <main className="flex flex-col items-center justify-center">
       <div className="container flex flex-col items-center justify-center gap-6 px-4 py-6 ">
-        <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
+        {/* <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
           AI-<span className="text-[hsl(280,100%,70%)]">Demo</span> Assets
-        </h1>
+        </h1> */}
+        {/* now the main content, an image map */}
+        <div className="w-full max-w-4xl h-full">
+          <InteractiveIndustryMap />
+        </div>
         
         <div className="flex flex-col items-center gap-2">
           <p className="text-2xl text-white">

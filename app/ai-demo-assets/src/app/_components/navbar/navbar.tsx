@@ -35,20 +35,14 @@ export function Navbar( { authenticated, darkMode }: props) {
             <div className="flex h-16 justify-between">
               <div className="flex">
                 <div className="flex flex-shrink-0 items-center">
-                  {/* <Image
-                    className="block lg:hidden w-auto"
-                    src=""
-                    alt="Your Company"
+                  <Image
+                    className="block w-auto h-6 bg-white rounded-md"
+                    src="/logo.svg"
+                    alt="AI-Assets"
                     width={32} height={32}
                     priority={true}
                   />
-                  <Image
-                    className="hidden lg:block w-auto"
-                    src=""
-                    alt="Your Company"
-                    width={32} height={32}
-                    priority={true}
-                  /> */}
+
                 </div>
 
                 <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">

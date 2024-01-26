@@ -111,11 +111,6 @@ const InteractiveIndustryMap: React.FC = () => {
 
     replace(`search?${params.toString()}`);
 
-    
-
-  
-
-
   };
 
 
@@ -137,16 +132,7 @@ const InteractiveIndustryMap: React.FC = () => {
 
   return (
     <div className="relative h-auto w-full" ref={imageRef}>
-      {/* Background image */}
-      <Image
-        width={2400}
-        height={1350}
-        src="/piotr-chrobot-6oUsyeYXgTg-unsplash.jpg"
-        alt="Industry Map"
-        className="h-auto w-full rounded-lg object-cover"
-        onLoad={() => setImageLoaded(true)} // Set the imageLoaded state to true when the image has loaded
-
-      />
+      
       {/* Hotspots */}
       <div className="absolute left-0 top-0 h-full w-full">
         {industries.map((industry) => {

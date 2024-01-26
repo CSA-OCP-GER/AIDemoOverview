@@ -14,9 +14,10 @@ function classNames(...classes: string[]): string {
 // properties: authenticated: boolean
 type props = {
   authenticated: boolean;
+  darkMode?: boolean;
 };
 
-export function Navbar( { authenticated }: props) {
+export function Navbar( { authenticated, darkMode }: props) {
   
     const links = [
         { href: '/', label: 'Home', authenticated: false },
@@ -27,7 +28,7 @@ export function Navbar( { authenticated }: props) {
     const pathname = usePathname();
 
     return (
-      <Disclosure as="nav" className="border-b border-gray-200 bg-white">
+      <Disclosure as="nav" className="bg-white backdrop-blur-3xl bg-opacity-95">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

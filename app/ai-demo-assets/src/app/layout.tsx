@@ -33,20 +33,9 @@ export default async function RootLayout({
         />
       </head>
       <body className={`font-sans ${inter.variable} h-full`}>
-        <>
           <TRPCReactProvider>
-            <div className="min-h-full">
-              <Navbar authenticated={!!session?.user} />
-              <div className="py-10">
-                <main>
-                  <div className="mx-auto max-w-7xl sm:px-6 lg:px-12">
                     {children}
-                  </div>
-                </main>
-              </div>
-            </div>
           </TRPCReactProvider>
-        </>
       </body>
     </html>
   );

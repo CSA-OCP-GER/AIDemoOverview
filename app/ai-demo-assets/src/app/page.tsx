@@ -39,7 +39,7 @@ export default async function Home() {
                 
                 {/* now the main content, an image map */}
                 <div className="h-full w-full">
-                  {/* <InteractiveIndustryMap /> */}
+                  <InteractiveIndustryMap />
                 </div>
 
                 <div className="flex flex-col items-center gap-2">

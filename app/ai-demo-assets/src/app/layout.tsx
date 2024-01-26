@@ -3,7 +3,6 @@ import "~/styles/globals.css";
 import { Inter } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
-import { Navbar } from "./_components/navbar/navbar";
 import { getServerAuthSession } from "~/server/auth";
 
 const inter = Inter({
@@ -22,8 +21,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerAuthSession();
-
   return (
     <html lang="en" className="h-full">
       <head>
@@ -33,9 +30,7 @@ export default async function RootLayout({
         />
       </head>
       <body className={`font-sans ${inter.variable} h-full`}>
-          <TRPCReactProvider>
-                    {children}
-          </TRPCReactProvider>
+        <TRPCReactProvider>{children}</TRPCReactProvider>
       </body>
     </html>
   );

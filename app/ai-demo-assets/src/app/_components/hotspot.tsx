@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 interface HotspotProps {
   id: number;
@@ -21,23 +21,34 @@ const Hotspot: React.FC<HotspotProps> = ({
   onBlur,
   isFocused,
 }) => {
-    const lineLength = 70; // Adjusted for the viewBox size
-    const centerX = 100; // Center x-coordinate in the viewBox
-    const centerY = 90; // Center y-coordinate in the viewBox
-    const lineStartX = centerX;
-    const lineStartY = centerY;
-    const lineEndX = centerX;
-    const lineEndY = centerY - lineLength; // Line goes up from the center
-  
-    const [hovered, setHovered] = useState(false);
+  const lineLength = 70; // Adjusted for the viewBox size
+  const centerX = 80; // Center x-coordinate in the viewBox
+  const centerY = 50; // Center y-coordinate in the viewBox
+  const lineStartX = centerX;
+  const lineStartY = centerY;
+  const lineEndX = centerX;
+  const lineEndY = centerY + lineLength; // Line goes down from the center
 
-    const handleMouseEnter = () => {
-      setHovered(true);
-    };
-  
-    const handleMouseLeave = () => {
-      setHovered(false);
-    };
+  const [hovered, setHovered] = useState(false);
+
+  const handleMouseEnter = () => {
+    setHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setHovered(false);
+  };
+
+  // Define a function to calculate the scale based on the y-coordinate
+  const calculateRadius = (yValue: number) => {
+    const minScale = -0.3; // The scale at the bottom of the image
+    const maxScale = 3.5; // The scale at the top of the image
+    const yRange = 1200; // The range of y-coordinates
+    return minScale + (maxScale - minScale) * (yValue / yRange);
+  };
+
+  // Use useMemo to avoid recalculating the scale unnecessarily
+  const radiusScale = useMemo(() => calculateRadius(y), [y]);
 
   return (
     <svg
@@ -63,22 +74,23 @@ const Hotspot: React.FC<HotspotProps> = ({
         strokeWidth="1"
       />
       <text
-        x={lineEndX}
-        y={lineEndY - 10} // Adjust the y position to place the text above the line
+        x={centerX + 20} // Position the text to the right of the center
+        y={centerY} // Align the text vertically with the center
         fill="white"
         fontSize="12"
-        textAnchor="middle"
+        scale={radiusScale}
+        textAnchor="start" // Align the text to the start (left side)
         dominantBaseline="central"
-        className={`text-industry ${hovered ? 'text-hovered' : ''}`}>
+        className={`text-industry ${hovered ? 'text-hovered' : ''}`}
+      >
         {title}
       </text>
-
 
       <title>{title}</title>
       <circle
         cx={centerX}
         cy={centerY}
-        r="50"
+        r={50 * radiusScale}
         fill="white"
         fillOpacity="0.1"
         className={`third-circle ${isFocused ? "focused" : ""}`}
@@ -87,7 +99,7 @@ const Hotspot: React.FC<HotspotProps> = ({
       <circle
         cx={centerX}
         cy={centerY}
-        r="10"
+        r={10 * radiusScale}
         fill="white"
         fillOpacity="0.4"
         className="inner-circle"
@@ -95,7 +107,7 @@ const Hotspot: React.FC<HotspotProps> = ({
       <circle
         cx={centerX}
         cy={centerY}
-        r="30"
+        r={30 * radiusScale}
         fill="white"
         fillOpacity="0.3"
         className={`outer-circle ${isFocused ? "focused" : ""}`}

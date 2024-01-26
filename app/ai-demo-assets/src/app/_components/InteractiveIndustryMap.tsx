@@ -46,7 +46,7 @@ const industryTitles = [
   
   // Generate and shuffle the arrays for x and y coordinates
   const xCoordinates = shuffleArray(generateNumberArray(10, 90));
-  const yCoordinates = shuffleArray(generateNumberArray(40, 90));
+  const yCoordinates = shuffleArray(generateNumberArray(35, 80));
   
   // Map over the titles to create the industries array
   const industries: Industry[] = industryTitles.map((title, index) => ({

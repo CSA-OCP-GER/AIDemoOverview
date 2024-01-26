@@ -22,13 +22,15 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-
   const session = await getServerAuthSession();
 
   return (
     <html lang="en" className="h-full">
       <head>
-        <meta name="google-site-verification" content="ZceQb5YZyLG_rNO44pH9OqH7NzY26lsCHMm2HbT-wTQ" />
+        <meta
+          name="google-site-verification"
+          content="ZceQb5YZyLG_rNO44pH9OqH7NzY26lsCHMm2HbT-wTQ"
+        />
       </head>
       <body className={`font-sans ${inter.variable} h-full`}>
         <>

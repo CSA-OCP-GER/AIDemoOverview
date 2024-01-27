@@ -41,8 +41,8 @@ const Hotspot: React.FC<HotspotProps> = ({
 
   // Define a function to calculate the scale based on the y-coordinate
   const calculateRadius = (yValue: number) => {
-    const minScale = -0.3; // The scale at the bottom of the image
-    const maxScale = 3.5; // The scale at the top of the image
+    const minScale = -0.1; // The scale at the bottom of the image
+    const maxScale = 1.5; // The scale at the top of the image
     const yRange = 1200; // The range of y-coordinates
     return minScale + (maxScale - minScale) * (yValue / yRange);
   };
@@ -50,9 +50,18 @@ const Hotspot: React.FC<HotspotProps> = ({
   // Use useMemo to avoid recalculating the scale unnecessarily
   const radiusScale = useMemo(() => calculateRadius(y), [y]);
 
+  // Generate a random delay between 0s and 2s
+  const animationDelay = useMemo(() => `${Math.random() * 10}s`, []);
+
+  // Inline style for the circles to apply the random animation delay
+  const circleStyle = {
+    animationDelay: animationDelay,
+  };
+
   return (
     <svg
-      onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       key={id}
       width="200"
       height="140"
@@ -81,7 +90,7 @@ const Hotspot: React.FC<HotspotProps> = ({
         scale={radiusScale}
         textAnchor="start" // Align the text to the start (left side)
         dominantBaseline="central"
-        className={`text-industry ${hovered ? 'text-hovered' : ''}`}
+        className={`text-industry ${hovered ? "text-hovered" : ""}`}
       >
         {title}
       </text>
@@ -101,18 +110,27 @@ const Hotspot: React.FC<HotspotProps> = ({
         cy={centerY}
         r={10 * radiusScale}
         fill="white"
+        fillOpacity="0.9"
+        className="inner-circle"
+      />
+      <circle
+        cx={centerX}
+        cy={centerY}
+        r={25 * radiusScale}
+        fill="white"
         fillOpacity="0.4"
         className="inner-circle"
       />
       <circle
         cx={centerX}
         cy={centerY}
-        r={30 * radiusScale}
+        r={20 * radiusScale}
         fill="white"
         fillOpacity="0.3"
+        style={circleStyle} // Apply the random delay here
+
         className={`outer-circle ${isFocused ? "focused" : ""}`}
       />
-      
     </svg>
   );
 };

@@ -14,7 +14,7 @@ export default async function Home() {
   const session = await getServerAuthSession();
 
   return (
-    <div className="min-h-full">
+    <div className="h-screen bg-slate-600">
       {/* Background image */}
       <div className="absolute inset-0 z-0">
         <Image
@@ -26,47 +26,14 @@ export default async function Home() {
         />
       </div>
 
-
-      <div className="relative z-10">
-      <Navbar authenticated={!!session?.user} />
+      <div className="relative z-20">
+        <Navbar authenticated={!!session?.user} />
       </div>
-      <div className="py-10 relative z-10">
-        <main>
-          <div className="mx-auto max-w-7xl sm:px-6 lg:px-12">
-            
-            <main className="flex flex-col items-center justify-center">
-              <div className="container flex flex-col items-center justify-center gap-6  ">
-                
-                {/* now the main content, an image map */}
-                <div className="h-full w-full">
-                  <InteractiveIndustryMap />
-                </div>
-
-                <div className="flex flex-col items-center gap-2">
-                  <p className="text-2xl text-white">
-                    {hello ? hello.greeting : "Loading tRPC query..."}
-                  </p>
-
-                  <div className="flex flex-col items-center justify-center gap-4">
-                    <p className="text-center text-2xl text-white">
-                      {session && (
-                        <span>Logged in as {session.user?.name}</span>
-                      )}
-                    </p>
-                    <Link
-                      href={session ? "/api/auth/signout" : "/api/auth/signin"}
-                      className="rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20"
-                    >
-                      {session ? "Sign out" : "Sign in"}
-                    </Link>
-                  </div>
-                </div>
-
-                {/* <CrudShowcase /> */}
-              </div>
-            </main>
-          </div>
-        </main>
+      <div className="relative z-10">
+        {/* flex vertical  */}
+        <div className="h-[calc(100vh-4rem)] overflow-hidden">
+          <InteractiveIndustryMap />
+        </div>
       </div>
     </div>
   );

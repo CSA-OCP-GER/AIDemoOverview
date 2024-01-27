@@ -5,31 +5,27 @@
 /* TailwindCSS styles */
 
 .outer-circle {
-    transition: all 0.9s ease;
-  }
-  
-  .outer-circle.focused,
-  .outer-circle:hover,
-  .outer-circle:focus {
-    animation: growAndFade 1.2s infinite;
-  }
-  
-  .text-industry {
-    font-size: 0.7rem;
-    font-weight: 600;
-    opacity: 0.6;
-  }
+  transition: all 1.9s ease;
+  animation: growAndFade 4s infinite; /* Apply the calmPulse animation continuously */
+}
 
-  .text-hovered {
-    font-size: 0.9rem;
-    opacity: 1.0;
-    transition: all 0.6s ease;
-  }
+/* Removed the hover and focus selectors since we want the pulse effect to be always on */
 
-  
+.text-industry {
+  font-size: 0.7rem;
+  font-weight: 600;
+  opacity: 0.6;
+}
+
+.text-hovered {
+  font-size: 0.9rem;
+  opacity: 1.0;
+  transition: all 0.6s ease;
+}
+
   @keyframes growAndFade {
     0%{
-      r: 40;
+      r: 10;
       opacity: 0.5;
     }
     50% {

@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import { api } from "~/trpc/server";
 import { Suspense } from "react";
+import type { AIDemoAsset } from "../models/aidemoasset";
 
 // for each industry define a color
 const industries = [
@@ -28,9 +29,6 @@ const demoTypes = [
   { name: "Other", color: "bg-gray-100 text-gray-800" },
 ];
 
-const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
-
-
 export default async function DemoTable({
   searchParams,
 }: {
@@ -42,7 +40,8 @@ export default async function DemoTable({
   const query = searchParams?.query ?? "";
 
 
-  const aidemos = await api.demos.demos.query({ text: query });
+  const aidemos = await api.aiDemoAssets.getAll.query({ text: query });
+
 
 
   const getIndustryColor = (industry: string) => {
@@ -97,20 +96,22 @@ export default async function DemoTable({
                         <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
                           <div className="flex items-center">
                             <div className="h-11 w-11 flex-shrink-0">
-                              <Image
+                              {/* <Image
                                 className="h-11 w-11 rounded-full"
                                 src={demo.image}
                                 alt=""
                                 width={32}
                                 height={32}
-                              />
+                              /> */}
+                              Image
                             </div>
                             <div className="ml-4">
                               <div className="font-medium text-gray-900">
                                 {demo.name}
                               </div>
                               <div className="mt-1 text-gray-500">
-                                {demo.area}
+                                {/* {demo.area} */}
+                                Area
                               </div>
                             </div>
                           </div>
@@ -150,20 +151,22 @@ export default async function DemoTable({
                 <li key={demo.name} className="py-4">
                   <div className="flex items-center space-x-4">
                     <div className="flex-shrink-0">
-                      <Image
+                      {/* <Image
                         className="h-8 w-8 rounded-full"
                         src={demo.image}
                         alt=""
                         width={32}
                         height={32}
-                      />
+                      /> */}
+                      Image
                     </div>
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-sm font-medium text-gray-900">
                         {demo.name}
                       </p>
                       <p className="truncate text-sm text-gray-500">
-                        {demo.area}
+                        {/* {demo.area} */}
+                        Area
                       </p>
                       <p className="mt-1 text-sm text-gray-500">
                         {demo.description}
@@ -176,13 +179,14 @@ export default async function DemoTable({
                           {industry}
                         </span>
                       ))}
-                      {demo.demoType && (
+
+                      {/* {demo.demoType && (
                         <span
                           className={`mt-1 inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getDemoTypeColor(demo.demoType)}`}
                         >
                           {demo.demoType}
                         </span>
-                      )}
+                      )} */}
                     </div>
                   </div>
                 </li>

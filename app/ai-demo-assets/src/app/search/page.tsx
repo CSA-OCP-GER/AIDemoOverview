@@ -10,6 +10,7 @@ export default async function Page({
   };
 }) {
 
+
   return (
     <div>
       <main>
@@ -45,9 +46,6 @@ export default async function Page({
 
               {/* Search results */}
               <DemoTable searchParams={searchParams} />
-
-
-
             </div>
           </div>
         </div>

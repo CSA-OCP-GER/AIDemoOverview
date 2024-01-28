@@ -38,7 +38,7 @@ export default async function Page({
                         />
                       </svg>
                     </div>
-                    <Search placeholder="Search for a demo" />
+                    <Search placeholder="Search for a demo"  />
                   </div>
                 </div>
               </div>

@@ -1,6 +1,6 @@
 
 import { getContainer } from './db';
-import type { AIDemoAsset } from '../models/aidemoasset';
+import type { AIDemoAsset } from '../models/aidemoAsset';
 
 
 // get AIDemoAssets from cosmos db

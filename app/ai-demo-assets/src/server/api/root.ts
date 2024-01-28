@@ -1,5 +1,4 @@
 import { postRouter } from "~/server/api/routers/post";
-import { demosRouter } from "~/server/api/routers/demo";
 import { createTRPCRouter } from "~/server/api/trpc";
 import { aiDemoAssetRouter } from "./routers/aidemoasset";
 
@@ -10,7 +9,6 @@ import { aiDemoAssetRouter } from "./routers/aidemoasset";
  */
 export const appRouter = createTRPCRouter({
   post: postRouter,
-  demos: demosRouter,
   aiDemoAssets: aiDemoAssetRouter,
 });
 

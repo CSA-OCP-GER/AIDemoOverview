@@ -1,7 +1,7 @@
 // routers/aidemoasset.ts
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { getAIDemoAssets } from "~/server/lib/data";
+import { getAIDemoAssets, getDistinctIndustries } from "~/server/lib/data";
 
 export const aiDemoAssetRouter = createTRPCRouter({
   getAll: publicProcedure
@@ -18,17 +18,24 @@ export const aiDemoAssetRouter = createTRPCRouter({
         const description = asset.description.toLowerCase();
         // Assuming 'area' is a property you want to search, if it exists
         // const area = asset.area?.toLowerCase() || '';
-        const industries = asset.industries.map((industry) => industry.toLowerCase());
+        const industries = asset.industries.map((industry) =>
+          industry.toLowerCase(),
+        );
 
         // Add any other properties you want to include in the search
         return (
           name.includes(search) ||
           description.includes(search) ||
-        //   area.includes(search) ||
+          //   area.includes(search) ||
           industries.some((industry) => industry.includes(search))
         );
       });
 
       return results;
     }),
+
+  getDistinctIndustries: publicProcedure.query(async () => {
+    const industries = await getDistinctIndustries();
+    return industries;
+  }),
 });

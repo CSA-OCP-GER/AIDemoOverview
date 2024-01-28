@@ -2,6 +2,7 @@ export type AIDemoAsset = {
     id: string;
     name: string;
     description: string;
+    image: string | null; // Assuming that 'Image' could be a link or null if not provided
     technologies: string[]; // Array of technologies
     industries: string[]; // Array of industries
     reference: string | null; // Assuming that 'Reference' could be a link or null if not provided

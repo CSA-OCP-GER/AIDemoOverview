@@ -2,10 +2,9 @@ import Image from "next/image";
 
 import { api } from "~/trpc/server";
 import { Suspense } from "react";
-import type { AIDemoAsset } from "../models/aidemoasset";
 
 // for each industry define a color
-const industries = [
+const industryColors = [
   { name: "Retail", color: "bg-blue-100 text-blue-800" },
   { name: "Education", color: "bg-green-100 text-green-800" },
   { name: "Healthcare", color: "bg-yellow-100 text-yellow-800" },
@@ -18,6 +17,13 @@ const industries = [
   { name: "Telecommunications", color: "bg-teal-100 text-teal-800" },
   { name: "Agriculture", color: "bg-cyan-100 text-cyan-800" },
   { name: "Other", color: "bg-gray-100 text-gray-800" },
+  
+  // add more industries here: Automotive, Banking, B2B, B2C, Chemicals, Construction, Consulting, Consumer Goods, Defense, Electronics, Engineering, Entertainment, Food & Beverage, Hospitality, Insurance, Legal, Machinery, Maritime, Marketing, Mining, Nonprofit, Pharmaceuticals, Real Estate, Security, Shipping, Technology, Utilities, Wholesale
+  { name: "Automotive", color: "bg-blue-100 text-blue-800" },
+  { name: "Banking", color: "bg-green-100 text-green-800" },
+  { name: "B2B", color: "bg-yellow-100 text-yellow-800" },
+
+  // Software Development, 
 ];
 
 // define demo types, for each type define a color
@@ -46,7 +52,7 @@ export default async function DemoTable({
 
   const getIndustryColor = (industry: string) => {
     return (
-      industries.find((i) => i.name === industry)?.color ??
+      industryColors.find((i) => i.name === industry)?.color ??
       "bg-gray-100 text-gray-800"
     );
   };
@@ -96,14 +102,15 @@ export default async function DemoTable({
                         <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
                           <div className="flex items-center">
                             <div className="h-11 w-11 flex-shrink-0">
-                              {/* <Image
-                                className="h-11 w-11 rounded-full"
-                                src={demo.image}
+                              { demo.image && (
+                              <Image
+                                className="h-8 w-8 rounded-full"
+                                src={`/icons/${demo.image}`}
                                 alt=""
                                 width={32}
                                 height={32}
-                              /> */}
-                              Image
+                              />
+                              )}
                             </div>
                             <div className="ml-4">
                               <div className="font-medium text-gray-900">
@@ -126,7 +133,7 @@ export default async function DemoTable({
                             <span
                               key={index}
                               className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                                industries.find((i) => i.name === industry)
+                                industryColors.find((i) => i.name === industry)
                                   ?.color
                               }`}
                             >
@@ -151,14 +158,15 @@ export default async function DemoTable({
                 <li key={demo.name} className="py-4">
                   <div className="flex items-center space-x-4">
                     <div className="flex-shrink-0">
-                      {/* <Image
-                        className="h-8 w-8 rounded-full"
-                        src={demo.image}
-                        alt=""
-                        width={32}
-                        height={32}
-                      /> */}
-                      Image
+                      { demo.image && (
+                         <Image
+                         className="h-8 w-8 rounded-full"
+                         src={`/icons/${demo.image}`}
+                         alt=""
+                         width={32}
+                         height={32}
+                       />
+                      )}
                     </div>
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-sm font-medium text-gray-900">

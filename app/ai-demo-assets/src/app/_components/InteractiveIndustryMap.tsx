@@ -4,17 +4,6 @@ import Hotspot from "./hotspot";
 import { useRouter, useSearchParams } from "next/navigation";
 
 
-// Titles of your industries
-const industryTitles = [
-  "Healthcare",
-  "Retail",
-  "Manufacturing",
-  "Finance",
-  "Transportation",
-  "Education",
-  // ... add more titles if needed
-];
-
 
 interface Position {
   x: number;
@@ -22,19 +11,25 @@ interface Position {
 }
 
 
-const InteractiveIndustryMap: React.FC = () => {
+interface InteractiveIndustryMapProps {
+  industries: string[]; // Add this prop to accept the industries array
+}
+
+const InteractiveIndustryMap: React.FC<InteractiveIndustryMapProps> = ({ industries }) => {
   const [focusedIndustry, setFocusedIndustry] = useState<number | null>(null);
   const [dimensions, setDimensions] = useState<{ width: number; height: number }>({ width: 0, height: 0 });
   const [positions, setPositions] = useState<Position[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
+
+
   const handleFocus = (industryId: number) => {
     setFocusedIndustry(industryId);
   };
 
   const handleClick = (industryId: number) => {
-    const industryTitle = industryTitles[industryId];
+    const industryTitle = industries[industryId];
     router.replace(`/search?query=${encodeURIComponent(industryTitle!)}`);
   };
 
@@ -69,9 +64,9 @@ const InteractiveIndustryMap: React.FC = () => {
     };
 
     if (dimensions.width && dimensions.height) {
-      setPositions(generateRandomPositions(industryTitles.length, dimensions.width, dimensions.height));
+      setPositions(generateRandomPositions(industries.length, dimensions.width, dimensions.height));
     }
-  }, [dimensions]);
+  }, [dimensions, industries]);
 
   return (
     <div ref={containerRef} className="fixed inset-0 flex justify-center items-center">
@@ -79,7 +74,7 @@ const InteractiveIndustryMap: React.FC = () => {
         <Hotspot
           key={index}
           id={index}
-          title={industryTitles[index]!}
+          title={industries[index]!}
           x={position.x}
           y={position.y}
           onClick={() => handleClick(index)}

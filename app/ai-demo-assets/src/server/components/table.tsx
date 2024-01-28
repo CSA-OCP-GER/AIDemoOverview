@@ -4,7 +4,7 @@ import { api } from "~/trpc/server";
 import { Suspense } from "react";
 
 // for each industry define a color
-const industries = [
+const industryColors = [
   { name: "Retail", color: "bg-blue-100 text-blue-800" },
   { name: "Education", color: "bg-green-100 text-green-800" },
   { name: "Healthcare", color: "bg-yellow-100 text-yellow-800" },
@@ -17,6 +17,13 @@ const industries = [
   { name: "Telecommunications", color: "bg-teal-100 text-teal-800" },
   { name: "Agriculture", color: "bg-cyan-100 text-cyan-800" },
   { name: "Other", color: "bg-gray-100 text-gray-800" },
+  
+  // add more industries here: Automotive, Banking, B2B, B2C, Chemicals, Construction, Consulting, Consumer Goods, Defense, Electronics, Engineering, Entertainment, Food & Beverage, Hospitality, Insurance, Legal, Machinery, Maritime, Marketing, Mining, Nonprofit, Pharmaceuticals, Real Estate, Security, Shipping, Technology, Utilities, Wholesale
+  { name: "Automotive", color: "bg-blue-100 text-blue-800" },
+  { name: "Banking", color: "bg-green-100 text-green-800" },
+  { name: "B2B", color: "bg-yellow-100 text-yellow-800" },
+
+  // Software Development, 
 ];
 
 // define demo types, for each type define a color
@@ -45,7 +52,7 @@ export default async function DemoTable({
 
   const getIndustryColor = (industry: string) => {
     return (
-      industries.find((i) => i.name === industry)?.color ??
+      industryColors.find((i) => i.name === industry)?.color ??
       "bg-gray-100 text-gray-800"
     );
   };
@@ -126,7 +133,7 @@ export default async function DemoTable({
                             <span
                               key={index}
                               className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                                industries.find((i) => i.name === industry)
+                                industryColors.find((i) => i.name === industry)
                                   ?.color
                               }`}
                             >

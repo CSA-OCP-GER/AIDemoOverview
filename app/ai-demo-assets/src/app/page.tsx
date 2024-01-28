@@ -12,6 +12,8 @@ export default async function Home() {
   noStore();
   const hello = await api.post.hello.query({ text: "from tRPC" });
   const session = await getServerAuthSession();
+  const industries = await api.aiDemoAssets.getDistinctIndustries.query();
+
 
   return (
     <div className="h-screen bg-slate-600">
@@ -32,7 +34,7 @@ export default async function Home() {
       <div className="relative z-10">
         {/* flex vertical  */}
         <div className="h-[calc(100vh-4rem)] overflow-hidden">
-          <InteractiveIndustryMap />
+          <InteractiveIndustryMap industries={industries} />
         </div>
       </div>
     </div>

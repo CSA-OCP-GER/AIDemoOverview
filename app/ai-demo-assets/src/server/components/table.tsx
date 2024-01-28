@@ -2,7 +2,6 @@ import Image from "next/image";
 
 import { api } from "~/trpc/server";
 import { Suspense } from "react";
-import type { AIDemoAsset } from "../models/aidemoasset";
 
 // for each industry define a color
 const industries = [
@@ -96,14 +95,15 @@ export default async function DemoTable({
                         <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
                           <div className="flex items-center">
                             <div className="h-11 w-11 flex-shrink-0">
-                              {/* <Image
-                                className="h-11 w-11 rounded-full"
-                                src={demo.image}
+                              { demo.image && (
+                              <Image
+                                className="h-8 w-8 rounded-full"
+                                src={`/icons/${demo.image}`}
                                 alt=""
                                 width={32}
                                 height={32}
-                              /> */}
-                              Image
+                              />
+                              )}
                             </div>
                             <div className="ml-4">
                               <div className="font-medium text-gray-900">
@@ -151,14 +151,15 @@ export default async function DemoTable({
                 <li key={demo.name} className="py-4">
                   <div className="flex items-center space-x-4">
                     <div className="flex-shrink-0">
-                      {/* <Image
-                        className="h-8 w-8 rounded-full"
-                        src={demo.image}
-                        alt=""
-                        width={32}
-                        height={32}
-                      /> */}
-                      Image
+                      { demo.image && (
+                         <Image
+                         className="h-8 w-8 rounded-full"
+                         src={`/icons/${demo.image}`}
+                         alt=""
+                         width={32}
+                         height={32}
+                       />
+                      )}
                     </div>
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-sm font-medium text-gray-900">

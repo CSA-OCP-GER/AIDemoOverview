@@ -121,12 +121,14 @@ export default async function DemoList({
                       </span>
                     ))}
                   </div>
-                  {/* Displaying the publication status */}
-                  <p
-                    className={`ml-12 mt-6 text-xs inline-flex items-center rounded-full px-2.5 py-0.5 font-semibold ${demo.isPublished ? "text-green-800 bg-green-200" : "text-red-800 bg-red-300"}`}
-                  >
-                    {demo.isPublished ? "Published" : "Unpublished"}
-                  </p>
+                  {/* Displaying the publication status only if authenticated */}
+                  {session?.user && (
+                    <p
+                      className={`ml-12 mt-6 inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${demo.isPublished ? "bg-green-200 text-green-800" : "bg-red-300 text-red-800"}`}
+                    >
+                      {demo.isPublished ? "Published" : "Unpublished"}
+                    </p>
+                  )}
 
                   <div className="ml-12 flex justify-end">
                     <div className="mt-4 text-right">

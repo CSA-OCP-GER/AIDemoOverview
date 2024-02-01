@@ -6,6 +6,7 @@ import {
 import GithubProvider from "next-auth/providers/github";
 
 import { env } from "~/env";
+import { findOrCreateUser, UserProfile } from "./lib/data";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -17,15 +18,14 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
       id: string;
-      // ...other properties
-      // role: UserRole;
+      email: string;
+      name: string;
+      roles?: string[];
     } & DefaultSession["user"];
   }
 
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
+
+  
 }
 
 /**
@@ -35,13 +35,37 @@ declare module "next-auth" {
  */
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    session: ({ session, token }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: token.sub,
-      },
-    }),
+    async session({ session, token }) {
+      // Assuming the token.sub contains the user's ID
+      if (token.sub) {
+        // Fetch the user profile, including roles, based on the user's ID
+        const userProfile = await findOrCreateUser({ id: token.sub, email: session.user.email, name: session.user.name });
+
+        // Append roles to the session's user object
+        if (userProfile.roles) {
+          session.user.roles = userProfile.roles;
+        }
+      }
+
+      return session;
+    },
+
+    async signIn({ user, account, profile, email, credentials }) {
+      const userProfile: UserProfile = {
+        id: user.id,
+        email: user.email ?? "", // Ensure email is always a string, handle potential undefined values
+        name: user.name ?? "", // Same for name
+      };
+
+      const userInDb = await findOrCreateUser(userProfile);
+      if (userInDb) {
+        // User is either found or created, proceed with sign in
+        return true;
+      } else {
+        // Returning false denies the sign-in
+        return false;
+      }
+    },
   },
   providers: [
     GithubProvider({

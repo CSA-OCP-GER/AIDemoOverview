@@ -1,19 +1,16 @@
 import { unstable_noStore as noStore } from "next/cache";
 import Link from "next/link";
 
-import { CreatePost } from "~/app/_components/create-post";
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
-import InteractiveIndustryMap from "./_components/InteractiveIndustryMap";
 import { Navbar } from "./_components/navbar/navbar";
 import Image from "next/image";
+import InteractiveIndustryMap from "./_components/InteractiveIndustryMap";
 
 export default async function Home() {
   noStore();
-  const hello = await api.post.hello.query({ text: "from tRPC" });
   const session = await getServerAuthSession();
   const industries = await api.aiDemoAssets.getDistinctIndustries.query();
-
 
   return (
     <div className="h-screen bg-slate-600">
@@ -31,31 +28,22 @@ export default async function Home() {
       <div className="relative z-20">
         <Navbar authenticated={!!session?.user} />
       </div>
-      <div className="relative z-10">
+      <div className="relative">
         {/* flex vertical  */}
-        <div className="h-[calc(100vh-4rem)] overflow-hidden">
-          <InteractiveIndustryMap industries={industries} />
+        <div className="h-[calc(100vh-4rem)] overflow-hidden flex">
+        <div className="text-center my-0 mx-auto mt-20">
+          <h2 className="text-4xl font-bold tracking-tight sm:text-6xl text-purple-100 text-opacity-90">
+            AI Demo Assets
+          </h2>
+          <p className="mt-4 text-md md:text-lg leading-8 text-gray-300 px-10 md:px-20 xl:px-80 z-50">
+          Explore the latest AI demo assets to excite your customers with Azure AI, Dynamics 365, Power Platform, and beyond. Access a thoughtfully curated collection of AI demos, each chosen to inspire and reveal practical applications.
+          </p>
+        </div>
+
+        <InteractiveIndustryMap industries={industries} />
+
         </div>
       </div>
     </div>
   );
 }
-
-// async function CrudShowcase() {
-//   const session = await getServerAuthSession();
-//   if (!session?.user) return null;
-
-//   const latestPost = await api.post.getLatest.query();
-
-//   return (
-//     <div className="w-full max-w-xs">
-//       {latestPost ? (
-//         <p className="truncate">Your most recent post: {latestPost.name}</p>
-//       ) : (
-//         <p>You have no posts yet.</p>
-//       )}
-
-//       <CreatePost />
-//     </div>
-//   );
-// }

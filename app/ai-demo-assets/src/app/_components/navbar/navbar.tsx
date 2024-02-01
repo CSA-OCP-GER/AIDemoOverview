@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, BellIcon, XMarkIcon, KeyIcon } from "@heroicons/react/24/outline";
 import { Fragment, use } from "react";
 
 import { usePathname } from "next/navigation";
@@ -22,7 +22,7 @@ export function Navbar( { authenticated, darkMode }: props) {
     const links = [
         { href: '/', label: 'Home', authenticated: false },
         { href: '/search', label: 'AI-Demos', authenticated: false },
-        { href: '/admin', label: 'Admin', authenticated: true },
+        // { href: '/admin', label: 'Admin', authenticated: true },
     ]
 
     const pathname = usePathname();
@@ -70,14 +70,15 @@ export function Navbar( { authenticated, darkMode }: props) {
                 </div>
               </div>
               <div className="hidden sm:ml-6 sm:flex sm:items-center">
-                <button
+                <Link
+                  href={authenticated ? "/api/auth/signout" : "/api/auth/signin"}
                   type="button"
                   className="relative rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 >
                   <span className="absolute -inset-1.5" />
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon className="h-6 w-6" aria-hidden="true" />
-                </button>
+                  <span className="sr-only">Login / Logout</span>
+                  <KeyIcon className="h-6 w-6" color="#333399" aria-hidden="true" />
+                </Link>
 
                 {/* Profile dropdown */}
                 

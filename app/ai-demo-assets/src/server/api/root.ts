@@ -1,6 +1,7 @@
-import { postRouter } from "~/server/api/routers/post";
 import { createTRPCRouter } from "~/server/api/trpc";
-import { aiDemoAssetRouter } from "./routers/aidemoasset";
+import { aiDemoAssetRouter } from "./routers/aiDemoAssetsRouter";
+import { magicRouter } from "./routers/magicRouter";
+import { imageRouter } from "./routers/imageRouter";
 
 /**
  * This is the primary router for your server.
@@ -8,8 +9,9 @@ import { aiDemoAssetRouter } from "./routers/aidemoasset";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  post: postRouter,
   aiDemoAssets: aiDemoAssetRouter,
+  magic: magicRouter,
+  image: imageRouter,
 });
 
 // export type definition of API

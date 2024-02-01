@@ -25,6 +25,7 @@ const createAIDemoAssetSchema = z.object({
   material: z.string().nullable(),
   link: z.string().url(),
   type: z.string(),
+  isPublished: z.boolean(),
 });
 
 export const aiDemoAssetRouter = createTRPCRouter({

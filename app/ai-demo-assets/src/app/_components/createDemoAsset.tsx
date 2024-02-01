@@ -2,14 +2,14 @@
 
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 
 import Image from "next/image";
 import type { ChangeEvent, FormEvent } from "react";
 import Autocomplete from "@mui/joy/Autocomplete";
-import AutocompleteOption from '@mui/joy/AutocompleteOption';
-import ListItemDecorator from '@mui/joy/ListItemDecorator';
-import ListItemContent from '@mui/joy/ListItemContent';
+import AutocompleteOption from "@mui/joy/AutocompleteOption";
+import ListItemDecorator from "@mui/joy/ListItemDecorator";
+import ListItemContent from "@mui/joy/ListItemContent";
 
 import Input from "@mui/joy/Input";
 import Button from "@mui/joy/Button";
@@ -24,26 +24,29 @@ import Modal from "@mui/joy/Modal";
 import DialogTitle from "@mui/joy/DialogTitle";
 import DialogContent from "@mui/joy/DialogContent";
 import Textarea from "@mui/joy/Textarea";
+import Switch from "@mui/joy/Switch";
 
 import type { AIDemoAsset } from "~/server/models/aidemoAsset";
 import { api } from "~/trpc/react";
-
+import { FormLabel } from "@mui/joy";
 
 export function CreateDemoAsset() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-
   const [isLoadingMagic, setIsLoadingMagic] = useState(false);
   const [isMagicDialogOpen, setIsMagicDialogOpen] = useState(false);
   const [magicTextInput, setMagicTextInput] = useState("");
-
-
+  const [isEditMode, setIsEditMode] = useState(false);
 
   // Get the asset ID from the query string
   const assetId = searchParams.get("id");
 
-  const isEditMode = assetId !== undefined;
+  useEffect(() => {
+    if (assetId) {
+      setIsEditMode(true);
+    }
+  }, [assetId]);
 
   // Get the asset from the API
   const { data: asset } = api.aiDemoAssets.getById.useQuery(assetId ?? "", {
@@ -65,10 +68,10 @@ export function CreateDemoAsset() {
         material: asset.material,
         link: asset.link,
         type: asset.type,
+        isPublished: asset.isPublished,
       });
     }
   }, [asset, isEditMode]);
-
 
   // get industries for autocomplete
   const { data: industries } =
@@ -99,6 +102,7 @@ export function CreateDemoAsset() {
     material: "",
     link: "",
     type: "aidemoasset",
+    isPublished: false,
   });
 
   const createDemoAsset = api.aiDemoAssets.create.useMutation({
@@ -141,6 +145,7 @@ export function CreateDemoAsset() {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    console.log(isEditMode);
     if (isEditMode) {
       // Call the update mutation with the asset ID and form data
       updateDemoAsset.mutate({ id: asset!.id, asset: { ...formData } });
@@ -189,7 +194,7 @@ export function CreateDemoAsset() {
       };
 
       try {
-        const magicData = JSON.parse(data.magic!) as magicData;
+        const magicData = JSON.parse(data.magic) as magicData;
 
         setFormData((prevFormData) => ({
           ...prevFormData,
@@ -232,7 +237,7 @@ export function CreateDemoAsset() {
       };
 
       try {
-        const magicData = JSON.parse(data.magic!) as magicData;
+        const magicData = JSON.parse(data.magic) as magicData;
 
         setFormData((prevFormData) => ({
           ...prevFormData,
@@ -409,14 +414,18 @@ export function CreateDemoAsset() {
                 renderOption={(props, option) => (
                   <AutocompleteOption {...props}>
                     <ListItemDecorator>
-                    <Image src={`/icons/${option}`} alt={option} width={16} height={16} />
+                      <Image
+                        src={`/icons/${option}`}
+                        alt={option}
+                        width={16}
+                        height={16}
+                      />
                     </ListItemDecorator>
-                    <ListItemContent sx={{ fontSize: 'sm' }}>
+                    <ListItemContent sx={{ fontSize: "sm" }}>
                       {option}
                     </ListItemContent>
                   </AutocompleteOption>
                 )}
-
                 onChange={(event, newValue) => {
                   setFormData((prevFormData) => ({
                     ...prevFormData,
@@ -425,7 +434,6 @@ export function CreateDemoAsset() {
                 }}
                 value={formData.image}
               />
-
             </div>
 
             {/* Column 2 */}
@@ -520,6 +528,36 @@ export function CreateDemoAsset() {
                 }}
                 value={formData.kpis}
               />
+
+              <div className="mt-6 flex items-center gap-4 items-baseline">
+              <label
+                htmlFor="isPublished"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                Published
+              </label>
+                <Switch
+                id="isPublished"
+                checked={formData.isPublished}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                  setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    isPublished: event.target.checked,
+                  }))
+                }
+                color={formData.isPublished ? "success" : "neutral"}
+                variant={formData.isPublished ? "solid" : "outlined"}
+                endDecorator={formData.isPublished ? "Published" : "Off"}
+                slotProps={{
+                  endDecorator: {
+                    sx: {
+                      minWidth: 24,
+                    },
+                  },
+                }}
+              />
+              </div>
+              
             </div>
           </div>
         </div>

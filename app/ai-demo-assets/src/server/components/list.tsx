@@ -51,6 +51,16 @@ export default async function DemoList({
 
   const session = await getServerAuthSession();
 
+  // Filter demos based on publication status and user authentication
+  const filteredDemos = aidemos.filter(
+    (demo) => session?.user ?? demo.isPublished,
+  );
+
+  // Function to get the background color class based on the publication status
+  const getBackgroundColor = (isPublished: boolean) => {
+    return isPublished ? "bg-white" : "bg-gray-100"; // Using TailwindCSS for example
+  };
+
   const getIndustryColor = (industry: string) => {
     return (
       industryColors.find((i) => i.name === industry)?.color ??
@@ -72,10 +82,10 @@ export default async function DemoList({
         {/* Card view */}
         <div className="mt-8">
           <div className="grid grid-cols-1 gap-10 sm:grid-cols-2">
-            {aidemos.map((demo) => (
+            {filteredDemos.map((demo) => (
               <div
                 key={demo.name}
-                className="overflow-hidden rounded-lg bg-white shadow"
+                className={`overflow-hidden rounded-lg shadow ${getBackgroundColor(demo.isPublished)}`}
               >
                 <div className="p-4">
                   <div className="flex items-start">
@@ -111,12 +121,18 @@ export default async function DemoList({
                       </span>
                     ))}
                   </div>
+                  {/* Displaying the publication status */}
+                  <p
+                    className={`ml-12 mt-6 text-xs inline-flex items-center rounded-full px-2.5 py-0.5 font-semibold ${demo.isPublished ? "text-green-800 bg-green-200" : "text-red-800 bg-red-300"}`}
+                  >
+                    {demo.isPublished ? "Published" : "Unpublished"}
+                  </p>
 
                   <div className="ml-12 flex justify-end">
                     <div className="mt-4 text-right">
                       {/* style as button */}
                       <ModalCard>
-                        <div className="mt-6 mb-16 p-4">
+                        <div className="mb-16 mt-6 p-4">
                           <div className="flex items-start">
                             {demo.image && (
                               <Image
@@ -202,7 +218,7 @@ export default async function DemoList({
                             <Link
                               target="_blank"
                               href={demo.link}
-                              className="text-sm font-semibold text-indigo-600 hover:text-indigo-900 ml-2"
+                              className="ml-2 text-sm font-semibold text-indigo-600 hover:text-indigo-900"
                             >
                               {demo.name}
                             </Link>

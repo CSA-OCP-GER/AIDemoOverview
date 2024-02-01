@@ -11,5 +11,6 @@ export type AIDemoAsset = {
     material: string | null; // Assuming that 'Material' could be a description or null if not provided
     link: string; // URL to the resource
     type: string;
+    isPublished: boolean;
   };
   

@@ -1,5 +1,7 @@
 import { Navbar } from "~/app/_components/navbar/navbar";
 import { getServerAuthSession } from "~/server/auth";
+import DialogContainer from "../_components/dialogContainer";
+import { CreateDemoAsset } from "../_components/createDemoAsset";
 
 
 export const metadata = {
@@ -15,6 +17,18 @@ export default async function Layout({
 }) {
   const session = await getServerAuthSession();
 
+
+  async function onClose() {
+    "use server";
+    console.log("onClose");
+  }
+
+  async function onOk() {
+    "use server";
+    console.log("onOk");
+  }
+
+
   return (
     <>
       <div className="min-h-full">
@@ -25,6 +39,12 @@ export default async function Layout({
           </main>
         </div>
       </div>
+
+      <DialogContainer onClose={onClose} onOk={onOk}>
+        <CreateDemoAsset />
+      </DialogContainer>
+
+
     </>
   );
 }

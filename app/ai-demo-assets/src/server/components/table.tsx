@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import { api } from "~/trpc/server";
 import { Suspense } from "react";
+import Link from "next/link";
 
 // for each industry define a color
 const industryColors = [
@@ -94,6 +95,9 @@ export default async function DemoTable({
                       >
                         Industries
                       </th>
+                      <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                        Action
+                      </th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
@@ -140,6 +144,13 @@ export default async function DemoTable({
                               {industry}
                             </span>
                           ))}
+                        </td>
+                        <td className="px-3 py-5 text-right text-sm font-medium">
+                          <Link href={`/search?showDialog=true&id=${demo.id}`}
+                            className="text-indigo-600 hover:text-indigo-900"
+                          >
+                            Edit
+                          </Link>
                         </td>
                       </tr>
                     ))}

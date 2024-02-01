@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 
 import Image from "next/image";
 import type { ChangeEvent, FormEvent } from "react";
@@ -25,10 +25,11 @@ import DialogTitle from "@mui/joy/DialogTitle";
 import DialogContent from "@mui/joy/DialogContent";
 import Textarea from "@mui/joy/Textarea";
 import Switch from "@mui/joy/Switch";
+import CircularProgress from '@mui/joy/CircularProgress';
+
 
 import type { AIDemoAsset } from "~/server/models/aidemoAsset";
 import { api } from "~/trpc/react";
-import { FormLabel } from "@mui/joy";
 
 export function CreateDemoAsset() {
   const router = useRouter();
@@ -49,7 +50,7 @@ export function CreateDemoAsset() {
   }, [assetId]);
 
   // Get the asset from the API
-  const { data: asset } = api.aiDemoAssets.getById.useQuery(assetId ?? "", {
+  const { data: asset , isLoading} = api.aiDemoAssets.getById.useQuery(assetId ?? "", {
     enabled: isEditMode,
   });
 
@@ -313,6 +314,15 @@ export function CreateDemoAsset() {
     </Modal>
   );
 
+  const LoadingOverlay = () => (
+    <div className="absolute top-0 left-0 z-50 flex h-full w-full items-center justify-center bg-white bg-opacity-80 backdrop-blur-lg">
+      <div className="text-center">
+        <CircularProgress />
+        <p className="mt-2">Loading...</p>
+      </div>
+    </div>
+  );
+
   const submitButtonText = isEditMode
     ? updateDemoAsset.isLoading
       ? "Updating..."
@@ -324,6 +334,8 @@ export function CreateDemoAsset() {
   return (
     <>
       {magicDialog}
+      <div className="relative"> {/* Ensure this div or your form container has a relative position */}
+      {isLoading && <LoadingOverlay />}
       <form onSubmit={handleSubmit} className="space-y-12">
         <div className="border-b border-gray-900/10 pb-12">
           <h2 className="text-base font-semibold leading-7 text-gray-900">
@@ -598,6 +610,7 @@ export function CreateDemoAsset() {
           </div>
         </div>
       </form>
+      </div>
     </>
   );
 }

@@ -28,6 +28,9 @@ const createAIDemoAssetSchema = z.object({
   isPublished: z.boolean(),
 });
 
+// delay function to simulate network latency
+const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+
 export const aiDemoAssetRouter = createTRPCRouter({
   getAll: publicProcedure
     .input(z.object({ text: z.string().optional() })) // Make text optional
@@ -64,6 +67,8 @@ export const aiDemoAssetRouter = createTRPCRouter({
     .query(async ({ input }) => {
       const assets = await getAIDemoAssets();
       const asset = assets.find((asset) => asset.id === input);
+      await delay(1000);
+
       return asset;
     }),
 

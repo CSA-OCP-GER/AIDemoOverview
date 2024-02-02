@@ -47,12 +47,15 @@ export function CreateDemoAsset() {
     if (assetId) {
       setIsEditMode(true);
     }
+
   }, [assetId]);
 
   // Get the asset from the API
-  const { data: asset , isLoading} = api.aiDemoAssets.getById.useQuery(assetId ?? "", {
-    enabled: isEditMode,
+  const { data: asset, isLoading } = api.aiDemoAssets.getById.useQuery(assetId ?? "", {
+    // Only enable the query if assetId is truthy (not null and not an empty string)
+    enabled: !!assetId,
   });
+  
 
   // Initialize form data with the asset data if in 'edit' mode
   useEffect(() => {
@@ -335,7 +338,7 @@ export function CreateDemoAsset() {
     <>
       {magicDialog}
       <div className="relative"> {/* Ensure this div or your form container has a relative position */}
-      {isLoading && <LoadingOverlay />}
+      {isLoading && isEditMode && <LoadingOverlay />}
       <form onSubmit={handleSubmit} className="space-y-12">
         <div className="border-b border-gray-900/10 pb-12">
           <h2 className="text-base font-semibold leading-7 text-gray-900">
